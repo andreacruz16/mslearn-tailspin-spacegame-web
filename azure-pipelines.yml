@@ -10,21 +10,23 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- task: UsedotNet@02
-displayName: 'Use .NET Core SDK 3.1.100'
-Inputs:
-packageType: sdk
-version: 3.1.100
+- task: UseDotNet@2
+displayName: 'Use .NET Core SDK 3.1.101'
+  inputs:
+    packageType: sdk
+    version: 3.1.101
 
 - task: Npm@1
   displayName: 'Run npm install'
   inputs:
     verbose: false
 
-- script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot'
+    - script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot'
   displayName: 'Compile Sass assets'
 
 - task: gulp@1
@@ -46,4 +48,3 @@ version: 3.1.100
     command: 'build'
     arguments: '--no-restore --configuration Release'
     projects: '**/*.csproj'
-
